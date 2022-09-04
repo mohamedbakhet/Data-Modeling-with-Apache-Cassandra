@@ -17,23 +17,23 @@ after merge csv files to large csv file ,build cassandra table to optimize the n
 
 ### Query 1
 ![](images/carbon.png)
-to optimize this query ,build **Song_Details** cassandra table
+to optimize this query ,build **song_info_by_session** cassandra table
 
-`Table Name: Song_Details
+`Table Name: song_info_by_session
 column 1: artist           text
 column 2: song             text
 column 3: length           decimal
 Column 4: sessionid        int
 Column 5: itemlnsession    int
 PRIMARY KEY(sessionid, itemlnsession)`
-
+sessionid is a partition key and itemlnsession is cluster key
 ---
 
 ### Query 2
 ![](images/carbon2.png)
-to optimize this query ,build **user_history** cassandra table
+to optimize this query ,build **song_playing_history_by_user** cassandra table
 
- `Table Name: user_history
+ `Table Name: song_playing_history_by_user
 column 1: artist           text
 column 2: song             text
 column 3: first_name       text
@@ -48,17 +48,15 @@ userid and sessionid are composed partition key and itemlnsession is cluster key
 ---
 ### Query 3
 ![](images/carbon3.png)
-to optimize this query ,build **user_song** cassandra table
+to optimize this query ,build **who_listen_to_song** cassandra table
 
- `Table Name: user_song
+  `Table Name: who_listen_to_song
 Column 1: userid           int
 column 2: first_name       text
 column 3: last_name        text
 column 4: song             text
-PRIMARY KEY(song,first_name,last_name)`
-
-song and sessionid are composed partition key and first_name,last_name are cluster key
-
+PRIMARY KEY( song ,user_id)`
+song is partition key and userid is cluster key
 ---
 ## Dataset 
  working with event_data dataset,it contaion 30 file contains the history of music streaming app.  
